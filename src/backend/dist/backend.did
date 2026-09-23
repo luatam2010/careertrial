@@ -1,0 +1,152 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type TrialView = 
+ record {
+   progress: TrialProgress;
+   questions: vec Question;
+   tasks: vec Task;
+   title: text;
+ };
+type TrialProgress = 
+ record {
+   answers: vec record {
+                  QuestionId;
+                  nat;
+                };
+   assessment: opt Assessment;
+   completedSteps: vec StepId;
+   messages: vec ChatMessage;
+   reflections: vec record {
+                      QuestionId;
+                      text;
+                    };
+ };
+type Timestamp = int;
+type TaskId = nat;
+type Task = 
+ record {
+   id: TaskId;
+   order: nat;
+   steps: vec Step;
+   title: text;
+ };
+type StepId = nat;
+type Step = 
+ record {
+   id: StepId;
+   order: nat;
+   title: text;
+ };
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type QuestionId = nat;
+type Question = 
+ record {
+   id: QuestionId;
+   options: vec text;
+   order: nat;
+   prompt: text;
+ };
+type MessageId = nat;
+type FitLevel = 
+ variant {
+   developing;
+   moderate;
+   strong;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type ChatRole = 
+ variant {
+   mentor;
+   user;
+ };
+type ChatMessage = 
+ record {
+   createdAt: Timestamp;
+   id: MessageId;
+   role: ChatRole;
+   "text": text;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+type Assessment = 
+ record {
+   createdAt: Timestamp;
+   fitLevel: FitLevel;
+   improvements: vec text;
+   strengths: vec text;
+   suggestions: vec text;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  execute: (qJson: text) -> (Result) query;
+  /// Static Markdown documentation of the backend's public API.
+  getApiDoc: () -> (text) query;
+  /// The caller's suitability assessment, or null until the trial is complete.
+  getAssessment: () -> (opt Assessment) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// The caller's mentor chat history, oldest first. Read-only.
+  getMentorMessages: () -> (vec ChatMessage) query;
+  /// The caller's persisted progress. Read-only.
+  getProgress: () -> (TrialProgress) query;
+  /// The trial definition plus the caller's progress. Read-only.
+  getTrial: () -> (TrialView) query;
+  isCallerAdmin: () -> (bool) query;
+  schema: () -> (text) query;
+  /// Send a message to the mentor chat and receive the mentor's reply.
+  sendMentorMessage: ("text": text) -> (ChatMessage);
+  /// Record the caller's selected option for a quick-check question.
+  setAnswer: (questionId: QuestionId, optionIndex: nat) -> (TrialProgress);
+  /// Record the caller's free-text reflection for a quick-check question.
+  setReflection: (questionId: QuestionId, note: text) -> (TrialProgress);
+  /// Tick or untick a step in the caller's progress.
+  setStepCompleted: (stepId: StepId, completed: bool) -> (TrialProgress);
+}

@@ -1,0 +1,101 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type Assessment__260588747 =
+  {
+    createdAt : Timestamp__161879978;
+    fitLevel : FitLevel__228835147;
+    improvements : [Text];
+    strengths : [Text];
+    suggestions : [Text]
+  };
+type Assessment__838134985 =
+  {
+    createdAt : Timestamp__585128672;
+    fitLevel : FitLevel__119521427;
+    improvements : [Text];
+    strengths : [Text];
+    suggestions : [Text]
+  };
+type ChatMessage__225256361 =
+  {
+    createdAt : Timestamp__161879978;
+    id : MessageId__477249355;
+    role : ChatRole__504103037;
+    text : Text
+  };
+type ChatMessage__725985871 =
+  {
+    createdAt : Timestamp__585128672;
+    id : MessageId__82828111;
+    role : ChatRole__529252403;
+    text : Text
+  };
+type ChatRole__504103037 = {#mentor; #user};
+type ChatRole__529252403 = {#mentor; #user};
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type FitLevel__119521427 = {#developing; #moderate; #strong};
+type FitLevel__228835147 = {#developing; #moderate; #strong};
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type MessageId__291319400 = Nat;
+type MessageId__477249355 = Nat;
+type MessageId__82828111 = MessageId__291319400;
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__971537299 =
+  {
+    accessControlState : AccessControlState__201339279;
+    progress : Map__230067015<Principal, TrialProgress__348591064>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type QuestionId__502033272 = Nat;
+type QuestionId__77764146 = Nat;
+type QuestionId__874874032 = QuestionId__77764146;
+type StepId__38406889 = Nat;
+type StepId__861809527 = StepId__97856097;
+type StepId__97856097 = Nat;
+type Timestamp__161879978 = Int;
+type Timestamp__301639476 = Int;
+type Timestamp__585128672 = Timestamp__301639476;
+type TrialProgress__1011178971 =
+  {
+    answers : [(QuestionId__874874032, Nat)];
+    assessment : ?Assessment__838134985;
+    completedSteps : [StepId__861809527];
+    messages : [ChatMessage__725985871];
+    reflections : [(QuestionId__874874032, Text)]
+  };
+type TrialProgress__348591064 =
+  {
+    answers : [(QuestionId__502033272, Nat)];
+    assessment : ?Assessment__260588747;
+    completedSteps : [StepId__38406889];
+    messages : [ChatMessage__225256361];
+    reflections : [(QuestionId__502033272, Text)]
+  };
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "20260922120000" : (_old : {}) -> NewActor__971537299
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable progress :
+    {
+      var root : Node__204828119<Principal, TrialProgress__1011178971>;
+      var size : Nat__227979830
+    }
+};

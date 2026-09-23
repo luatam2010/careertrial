@@ -1,0 +1,21 @@
+{
+  "overview": "A Vietnamese career-trial web app where students work through a real career challenge, tick off each step, answer quick-check questions, and get mentor-style feedback on whether the career suits them.",
+  "features": [
+    "Work through a Career Trial task list with expandable step-by-step checklists",
+    "Tick off each step and watch completed tasks get marked done",
+    "Answer quick-check questions and write personal reflections",
+    "Get an assessment of how well the career suits you, with strengths and areas to improve",
+    "Chat with a mentor helper docked in the corner for advice",
+    "See a pilot pricing popup on arrival that you can dismiss",
+    "Sign in or create a student account with a matching design"
+  ],
+  "category": "productivity",
+  "tags": [
+    "career",
+    "education",
+    "students",
+    "assessment",
+    "vietnamese"
+  ],
+  "last_updated": "2026-09-22T15:34:52.415Z"
+}
